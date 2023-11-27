@@ -55,19 +55,22 @@ class Calc extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div className="">
-        <h1 className="">Rechner</h1>
+      <>
+      <h1 className="text-center text-4xl mt-5">Calculator</h1>
+      <div className="flex justify-center items-center m-10">
         <form
           onSubmit={(e) => {
             e.preventDefault();
           }}
         >
           <input
+            className="border m-2 text-xl"
             placeholder="First input"
             value={this.state.a || ""}
             onChange={(e) => this.handleInputChange(e, 'a')}
           />
           <input
+            className="border m-2 text-xl"
             placeholder="Second input"
             value={this.state.b || ""}
             onChange={(e) => this.handleInputChange(e, 'b')}
@@ -79,6 +82,7 @@ class Calc extends React.Component<IProps, IState> {
             {["+", "-", "/", "*"].map((ops) => {
               return (
                 <button
+                  className="border w-6 m-2 bg-green-700 hover:bg-green-500 text-black text-xl active:bg-yellow-600 focus:bg-yellow-300"
                   key={ops}
                   onClick={() => {
                     this.setOperator(ops);
@@ -90,6 +94,7 @@ class Calc extends React.Component<IProps, IState> {
             })}
           </div>
           <button
+            className="border w-6 m-2 text-xl bg-sky-500 hover:bg-sky-300 text-black active:bg-yellow-600 focus:bg-yellow-300"
             onClick={() => {
               const { a, b, operator } = this.state;
               if (a !== null && b !== null)
@@ -117,29 +122,26 @@ class Calc extends React.Component<IProps, IState> {
             <div>
               <div>
                 <button
+                  className="border w-6 m-2 bg-red-700 hover:bg-red-500 text-xl text-black active:bg-yellow-600 focus:bg-yellow-300"
                   onClick={() => {
                     const newState = { ...this.state };
                     newState.a = null;
                     newState.b = null;
+                    newState.writeTo = "a";
                     newState.result = null;
                     this.setState(newState);
                   }}
                 >
                   C
                 </button>
-                <button>
-                  ,
-                </button>
-                <button>
-                  0
-                </button>
               </div>
             </div>
             <div>
               <div>
-                {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((input) => {
+                {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((input) => {
                   return (
                     <button
+                    className="border w-6 m-2 bg-sky-500 hover:bg-sky-300 text-2xl text-black active:bg-yellow-600 focus:bg-yellow-300"
                       key={input}
                       onClick={() => {
                         this.onChange(input);
@@ -154,6 +156,7 @@ class Calc extends React.Component<IProps, IState> {
           </div>
           <div>
             <input
+              className="border m-2 text-2xl"
               readOnly
               placeholder="Result"
               value={this.state.result || ""}
@@ -161,6 +164,7 @@ class Calc extends React.Component<IProps, IState> {
           </div>
         </form>
       </div>
+      </>
     );
   }
 }
