@@ -1,4 +1,4 @@
-> Rebuilding an old calculator that was setup with CRA now with Vite and Tailwind CSS as excercise.
+> Updated old calculator that was setup with CRA now to Vite and basic Tailwind CSS.
 
 A minimal React setup with [Vite](https://vitejs.dev/guide/static-deploy.html).
 
