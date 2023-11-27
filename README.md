@@ -1,6 +1,6 @@
-A minimal React setup with [Vite](https://vitejs.dev/guide/static-deploy.html).
-
 > Rebuilding an old calculator that was setup with CRA now with Vite and Tailwind CSS as excercise.
+
+A minimal React setup with [Vite](https://vitejs.dev/guide/static-deploy.html).
 
 ## Getting Started
 

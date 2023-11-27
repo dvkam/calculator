@@ -1,23 +1,4 @@
 import React from "react";
-import { Grid } from "@nodeme/grid-react";
-import {
-  ITheme,
-  IDefinitions,
-  IProps as IPropsWithClasses,
-  withClasses,
-} from "@nodeme/jss-react";
-
-import { Form, Number } from "@nodeme/forms-react";
-import Button from "@nodeme/forms-react/lib/Components/Button";
-
-const styles = (theme: ITheme) => (definition: IDefinitions) => ({
-  headline: {
-    color: theme.palette.get("primary"),
-  },
-  op: {
-    padding: "16px",
-  },
-});
 
 export interface IProps {}
 export interface IState {
@@ -29,7 +10,7 @@ export interface IState {
   addCommaTo: "a" | "b" | null;
 }
 
-class Calc extends React.Component<IPropsWithClasses<IProps>, IState> {
+class Calc extends React.Component<IProps, IState> {
   state: IState = {
     a: null,
     b: null,
@@ -38,7 +19,7 @@ class Calc extends React.Component<IPropsWithClasses<IProps>, IState> {
     addCommaTo: null,
     operator: null,
   };
-  constructor(props: IPropsWithClasses<IProps>) {
+  constructor(props: IProps) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
@@ -55,6 +36,11 @@ class Calc extends React.Component<IPropsWithClasses<IProps>, IState> {
     } else this.setState({ ...this.state, [writeTo]: value });
   }
 
+  handleInputChange(event: React.ChangeEvent<HTMLInputElement>, field: keyof IState) {
+    const value = parseInt(event.target.value);
+    this.setState({ ...this.state, [field]: isNaN(value) ? null : value });
+  }
+
   setOperator(operator: string | null) {
     if (
       this.state.a !== null &&
@@ -68,59 +54,42 @@ class Calc extends React.Component<IPropsWithClasses<IProps>, IState> {
   }
 
   render() {
-    const { classes } = this.props;
     return (
       <div>
-        <h1 className={classes.headline}>Rechner</h1>
-        <Form
+        <h1>Rechner</h1>
+        <form
           onSubmit={(e) => {
             e.preventDefault();
           }}
-          spacing={16}
         >
-          <Number
-            item
-            inline
-            label="First Number"
-            xs={2}
-            value={this.state.a || undefined}
-            onChange={(value) => {
-              this.setState({ ...this.state, a: value || null });
-            }}
+          <input
+            placeholder="First input"
+            value={this.state.a || ""}
+            onChange={(e) => this.handleInputChange(e, 'a')}
           />
-          <Number
-            item
-            inline
-            label="Second Number"
-            xs={4}
-            value={this.state.b || undefined}
-            onChange={(value) => {
-              this.setState({ ...this.state, b: value || null });
-            }}
+          <input
+            placeholder="Second input"
+            value={this.state.b || ""}
+            onChange={(e) => this.handleInputChange(e, 'b')}
           />
-          <Grid item xs="50">
-            <div className={classes.op}>{this.state.operator}</div>
-          </Grid>
-          <Grid spacing={16}>
+          <div>
+            <div>{this.state.operator}</div>
+          </div>
+          <div>
             {["+", "-", "/", "*"].map((ops) => {
               return (
-                <Button
-                  item
-                  xs="50px"
-                  primary
+                <button
+                  key={ops}
                   onClick={() => {
                     this.setOperator(ops);
                   }}
                 >
                   {ops}
-                </Button>
+                </button>
               );
             })}
-          </Grid>
-          <Button
-            item
-            xs="50px"
-            primary
+          </div>
+          <button
             onClick={() => {
               const { a, b, operator } = this.state;
               if (a !== null && b !== null)
@@ -143,72 +112,57 @@ class Calc extends React.Component<IPropsWithClasses<IProps>, IState> {
             }}
           >
             =
-          </Button>
-          <Grid spacing={16} vertical root={{ top: 0, bottom: 0 }}>
-            <Grid item xs={"50px"}>
-              <Grid
-                spacing={16}
-                root={{ top: 0, left: 0, right: 0, bottom: 0 }}
-                vertical
-              >
-                <Button
-                  onClick={(event) => {
+          </button>
+          <div>
+            <div>
+              <div>
+                <button
+                  onClick={() => {
                     const newState = { ...this.state };
                     newState.a = null;
                     newState.b = null;
                     newState.result = null;
                     this.setState(newState);
                   }}
-                  item
-                  xs="50px"
-                  danger
                 >
                   C
-                </Button>
-                <Button item xs="50px" primary>
+                </button>
+                <button>
                   ,
-                </Button>
-                <Button item xs="50px" primary>
+                </button>
+                <button>
                   0
-                </Button>
-              </Grid>
-            </Grid>
-            <Grid item xs="198px">
-              <Grid
-                spacing={16}
-                vertical
-                root={{ top: 0, bottom: 0, left: 0, right: 0 }}
-              >
-                {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((number) => {
+                </button>
+              </div>
+            </div>
+            <div>
+              <div>
+                {[9, 8, 7, 6, 5, 4, 3, 2, 1].map((input) => {
                   return (
-                    <Button
-                      onClick={(event) => {
-                        this.onChange(number);
+                    <button
+                      key={input}
+                      onClick={() => {
+                        this.onChange(input);
                       }}
-                      item
-                      xs="50px"
-                      success
-                    >
-                      {number}
-                    </Button>
+                      >
+                      {input}
+                    </button>
                   );
                 })}
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid spacing={16} justify="flex-end">
-            <Number
-              item
-              inline
-              label="Ergebnis"
-              xs={5}
-              value={this.state.result || undefined}
+              </div>
+            </div>
+          </div>
+          <div>
+            <input
+              readOnly
+              placeholder="Result"
+              value={this.state.result || ""}
             />
-          </Grid>
-        </Form>
+          </div>
+        </form>
       </div>
     );
   }
 }
 
-export default withClasses(styles, Calc);
+export default Calc;
