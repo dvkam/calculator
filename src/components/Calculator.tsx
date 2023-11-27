@@ -55,8 +55,8 @@ class Calc extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <div>
-        <h1>Rechner</h1>
+      <div className="">
+        <h1 className="">Rechner</h1>
         <form
           onSubmit={(e) => {
             e.preventDefault();
